@@ -1,0 +1,23 @@
+﻿@page "/pdf"
+@using ServerSideApplication.Data
+@inject PDFService service
+@inject Microsoft.JSInterop.IJSRuntime JS
+@using System.IO;
+
+<h2>Syncfusion PDF library (Essential PDF)</h2>
+
+<p>Syncfusion Essential PDF is a Blazor PDF library used to create, read, and edit PDF files in your applications without Adobe dependencies </p>
+
+<button class="btn btn-primary" onclick="@CreatePDF">Create PDF</button>
+
+@functions {
+    MemoryStream pdfStream;
+    /// <summary>
+    /// Create and download the PDF document
+    /// </summary>
+    protected async void CreatePDF()
+    {
+        pdfStream = service.CreatePDF();
+        await JS.SaveAs("Sample.pdf", pdfStream.ToArray());
+    }
+}
