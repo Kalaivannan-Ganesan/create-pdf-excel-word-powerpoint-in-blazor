@@ -3,18 +3,19 @@
 
 <h2>Syncfusion PowerPoint library (Essential Presentation)</h2>
 
-<p>Syncfusion PowerPoint library (Essential Presentation) is a Blazor PowerPoint library that is used to create, open, read, edit, and convert PowerPoint files (.PPTX, .PPTM, .POTX, .POTM) in your applications without any Microsoft Office dependencies</p>
+<p>Syncfusion PowerPoint library (Essential Presentation) is a Blazor PowerPoint library used to create, read, edit, and convert PowerPoint files (.PPTX, .PPTM, .POTX, .POTM) in your applications without any Microsoft Office dependencies.</p>
 
 <button class="btn btn-primary" onclick="@CreatePowerPoint">Create PowerPoint</button>
 
 @functions {
-
+    /// <summary>
+    /// Creates a 'Hello World' PowerPoint document
+    /// </summary>
     async void CreatePowerPoint()
     {
         //Create a PowerPoint file
         using (IPresentation pptxFile = Presentation.Create())
         {
-
             //Add a slide to the PowerPoint Presentation
             ISlide firstSlide = pptxFile.Slides.Add(SlideLayoutType.Blank);
 
@@ -28,15 +29,16 @@
             paragraph.HorizontalAlignment = HorizontalAlignmentType.Center;
 
             //Add a textPart in the paragraph
-            ITextPart textPart = paragraph.AddTextPart("Hello World");            
+            ITextPart textPart = paragraph.AddTextPart("Hello World");
 
-            //Save and download the PPTX file
-            using (MemoryStream stream = new MemoryStream())
+            //Save the document as a stream and retrun the stream.
+            using (MemoryStream pptxStream = new MemoryStream())
             {
-                pptxFile.Save(stream);
+                //Save the created PowerPoint document to MemoryStream.
+                pptxFile.Save(pptxStream);
 
                 //Download the PDF file
-                await JS.SaveAs("Sample.pptx", stream.ToArray());
+                await JS.SaveAs("Sample.pptx", pptxStream.ToArray());
             }
         }
     }

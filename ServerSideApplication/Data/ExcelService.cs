@@ -11,9 +11,9 @@ namespace ServerSideApplication.Data
         /// <returns>Return the created excel document as stream</returns>
         public MemoryStream CreateExcel()
         {
+            //Create a new excel document
             using (ExcelEngine excelEngine = new ExcelEngine())
             {
-
                 //Instantiate the Excel application object
                 IApplication application = excelEngine.Excel;
 

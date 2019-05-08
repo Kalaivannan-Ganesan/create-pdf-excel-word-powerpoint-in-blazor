@@ -3,18 +3,20 @@
 
 <h2>Syncfusion PDF library (Essential PDF)</h2>
 
-<p>Syncfusion Essential PDF is a Blazor PDF library used to create, read, and edit PDF files in your applications.</p>
+<p>Syncfusion Essential PDF is a Blazor PDF library used to create, read, and edit PDF files in your applications without Adobe dependencies </p>
 
 <button class="btn btn-primary" onclick="@CreatePDF">Create PDF</button>
 
 @functions {
 
+    /// <summary>
+    /// Create the 'Hello World' PDF document
+    /// </summary>
     async void CreatePDF()
     {
         //Create a new PDF document
         using (PdfDocument document = new PdfDocument())
         {
-
             //Add a page to the document
             PdfPage page = document.Pages.Add();
 
@@ -27,9 +29,10 @@
             //Draw the text
             graphics.DrawString("Hello World!", font, PdfBrushes.Black, new Syncfusion.Drawing.PointF(0, 0));
 
-            //Save and download the PDF file
+            //Save the document as a stream and retrun the stream.
             using (MemoryStream stream = new MemoryStream())
             {
+                //Save the created PDF document to MemoryStream.
                 document.Save(stream);
 
                 //Download the PDF file
