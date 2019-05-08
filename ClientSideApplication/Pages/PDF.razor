@@ -1,0 +1,40 @@
+﻿@page "/pdf"
+@inject Microsoft.JSInterop.IJSRuntime JS
+
+<h2>Syncfusion PDF library (Essential PDF)</h2>
+
+<p>Syncfusion Essential PDF is a Blazor PDF library used to create, read, and edit PDF files in your applications.</p>
+
+<button class="btn btn-primary" onclick="@CreatePDF">Create PDF</button>
+
+@functions {
+
+    async void CreatePDF()
+    {
+        //Create a new PDF document
+        using (PdfDocument document = new PdfDocument())
+        {
+
+            //Add a page to the document
+            PdfPage page = document.Pages.Add();
+
+            //Create PDF graphics for the page
+            PdfGraphics graphics = page.Graphics;
+
+            //Set the standard font
+            PdfFont font = new PdfStandardFont(PdfFontFamily.Helvetica, 20);
+
+            //Draw the text
+            graphics.DrawString("Hello World!", font, PdfBrushes.Black, new Syncfusion.Drawing.PointF(0, 0));
+
+            //Save and download the PDF file
+            using (MemoryStream stream = new MemoryStream())
+            {
+                document.Save(stream);
+
+                //Download the PDF file
+                await JS.SaveAs("Sample.pdf", stream.ToArray());
+            }
+        }
+    }
+}

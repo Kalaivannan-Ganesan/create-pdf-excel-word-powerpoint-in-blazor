@@ -1,0 +1,43 @@
+﻿@page "/excel"
+@inject Microsoft.JSInterop.IJSRuntime JS
+
+<h2>Syncfusion Excel library (Essential XlsIO)</h2>
+
+<p>Syncfusion Essential XlsIO is a Blazor Excel library that allows to create, read, edit, and convert Excel files in your applications without Microsoft Office dependencies.</p>
+
+<button class="btn btn-primary" onclick="@CreateExcel">Create Excel</button>
+
+@functions {
+
+    async void CreateExcel()
+    {
+        using (ExcelEngine excelEngine = new ExcelEngine())
+        {
+
+            //Instantiate the Excel application object
+            IApplication application = excelEngine.Excel;
+
+            //Assigns application version
+            application.DefaultVersion = ExcelVersion.Excel2010;
+
+            //A new workbook is created equivalent to creating a new workbook in Excel
+            //Create a workbook with 1 worksheet
+            IWorkbook workbook = application.Workbooks.Create(1);
+
+            //Access first worksheet from the workbook
+            IWorksheet worksheet = workbook.Worksheets[0];
+
+            //Adding text to a cell
+            worksheet.Range["A1"].Text = "Hello World";
+
+            //Save and download the excel file
+            using (MemoryStream stream = new MemoryStream())
+            {
+                workbook.SaveAs(stream);
+
+                //Download the excel file
+                await JS.SaveAs("Sample.xlsx", stream.ToArray());
+            }
+        }
+    }
+}
